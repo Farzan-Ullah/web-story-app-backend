@@ -19,6 +19,17 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoute);
 
+app.use("*", (req, res) => {
+  res.status(404).json({ errorMessage: "Route Not Found!" });
+});
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  res.status(500).json({
+    errorMessage: "Something went wrong",
+  });
+});
+
 app.get("/api/health", (req, res) => {
   console.log("Server health is Excellent");
   res.json({
