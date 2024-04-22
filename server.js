@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
-const authRoute = require("./routes/auth");
+const userAuthRoute = require("./routes/userAuth");
 const app = express();
 const cors = require("cors");
 
@@ -17,18 +17,18 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("/api/auth", authRoute);
+app.use("/api/userauth", userAuthRoute);
 
-app.use("*", (req, res) => {
-  res.status(404).json({ errorMessage: "Route Not Found!" });
-});
+// app.use("*", (req, res) => {
+//   res.status(404).json({ errorMessage: "Route Not Found!" });
+// });
 
-app.use((error, req, res, next) => {
-  console.log(error);
-  res.status(500).json({
-    errorMessage: "Something went wrong",
-  });
-});
+// app.use((error, req, res, next) => {
+//   console.log(error);
+//   res.status(500).json({
+//     errorMessage: "Something went wrong",
+//   });
+// });
 
 app.get("/api/health", (req, res) => {
   console.log("Server health is Excellent");
