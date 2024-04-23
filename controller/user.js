@@ -33,4 +33,43 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser };
+const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({
+        errorMessage: "Bad request! Invalid Credentials",
+      });
+    }
+
+    const userDetails = await User.findOne({ username });
+    if (!userDetails) {
+      return res.status(401).json({ errorMessage: "User doesnt exist" });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, userDetails.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ errorMessage: "Password is not matched" });
+    }
+
+    const token = jwt.sign(
+      { userId: userDetails._id, name: userDetails.username },
+      process.env.SECRET_CODE,
+      { expiresIn: "60h" }
+    );
+
+    res.json({
+      message: " User logged in",
+      token: token,
+      name: userDetails.username,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "Something went wrong",
+    });
+  }
+};
+
+module.exports = { registerUser, loginUser };
