@@ -2,6 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
 const userAuthRoute = require("./routes/userAuth");
+const storiesRoute = require("./routes/stories");
 const app = express();
 const cors = require("cors");
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/userauth", userAuthRoute);
+app.use("/api/story", storiesRoute);
 
 // app.use("*", (req, res) => {
 //   res.status(404).json({ errorMessage: "Route Not Found!" });
