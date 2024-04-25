@@ -27,6 +27,22 @@ const createStories = async (req, res, next) => {
   }
 };
 
+const getFullStories = async (req, res, next) => {
+  try {
+    const stories = await Story.find();
+    if (!stories) {
+      return res.status(404).json({
+        errorMessage: "No stories found",
+      });
+    }
+    // Log the fetched stories
+    res.json({ data: stories });
+  } catch (error) {
+    console.error("Error fetching stories:", error);
+  }
+};
+
 module.exports = {
   createStories,
+  getFullStories,
 };

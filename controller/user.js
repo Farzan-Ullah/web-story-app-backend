@@ -72,4 +72,18 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getUserDetails = async (req, res) => {
+  try {
+    const user = await User.find();
+    if (!user) {
+      return res.status(404).json({
+        errorMessage: "No User Found",
+      });
+    }
+    res.json({ data: user });
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+module.exports = { registerUser, loginUser, getUserDetails };
