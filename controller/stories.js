@@ -36,7 +36,7 @@ const getFullStories = async (req, res, next) => {
       });
     }
     // Log the fetched stories
-    res.json({ data: stories });
+    res.json(stories);
   } catch (error) {
     console.error("Error fetching stories:", error);
   }
