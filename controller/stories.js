@@ -1,4 +1,5 @@
 const Story = require("../models/stories");
+const { decodeJwtToken } = require("../middleware/tokenVerify");
 
 const createStories = async (req, res, next) => {
   try {
@@ -42,7 +43,35 @@ const getFullStories = async (req, res, next) => {
   }
 };
 
+const getStoryById = async (req, res, next) => {
+  try {
+    const storyId = req.params.storyId;
+    const userId = decodeJwtToken();
+    const storyDetails = await Story.findById(storyId);
+
+    if (!storyDetails) {
+      return res.status(400).json({
+        errorMessage: "Bad request",
+      });
+    }
+
+    let isEditable;
+    if (userId) {
+      const ObjectId = mongoose.Types.ObjectId;
+      const id = new ObjectId(userId);
+      if (id === storyDetails.refUserId) {
+        isEditable = true;
+      }
+    }
+
+    res.json({ storyDetails, isEditable: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createStories,
   getFullStories,
+  getStoryById,
 };

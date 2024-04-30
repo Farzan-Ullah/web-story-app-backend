@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const storySchema = new mongoose.Schema({
   heading: {
-    type: String,
+    type: Array,
     required: true,
   },
   description: {
-    type: String,
+    type: Array,
     required: true,
   },
   image: {
-    type: String,
+    type: Array,
     required: true,
   },
   category: {

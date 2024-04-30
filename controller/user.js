@@ -24,7 +24,57 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
     await userData.save();
-    res.json({ message: "User registered successfully" });
+    const token = jwt.sign(
+      { userId: userData._id, name: userData.username },
+      process.env.SECRET_CODE,
+      { expiresIn: "60h" }
+    );
+    res.json({ message: "User registered successfully", token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "Something went wrong",
+    });
+  }
+};
+
+const updateUserBookmarks = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const postId = req.body.id;
+    await User.findByIdAndUpdate(userId, {
+      $addToSet: { userbookmarks: postId },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "Something went wrong",
+    });
+  }
+};
+
+const updateUserLikes = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const postId = req.body.id;
+    await User.findByIdAndUpdate(userId, {
+      $addToSet: { userlikes: postId },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "Something went wrong",
+    });
+  }
+};
+
+const updateUserStories = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const postId = req.body.id;
+    await User.findByIdAndUpdate(userId, {
+      $addToSet: { userstories: postId },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -72,4 +122,26 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getBookmarks = async (req, res, next) => {
+  try {
+    const bookmarks = await User.find();
+    if (!bookmarks) {
+      return res.status(404).json({
+        errorMessage: "No stories found",
+      });
+    }
+    // Log the fetched stories
+    res.json(bookmarks);
+  } catch (error) {
+    console.error("Error fetching stories:", error);
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  updateUserBookmarks,
+  updateUserLikes,
+  updateUserStories,
+  getBookmarks,
+};
