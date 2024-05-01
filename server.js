@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "https://swiptory-web-app.onrender.com/",
-    // Other CORS options...
+  
   })
 );
 
