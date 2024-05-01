@@ -7,7 +7,12 @@ const app = express();
 const cors = require("cors");
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://swiptory-web-app.onrender.com/",
+    // Other CORS options...
+  })
+);
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -20,17 +25,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/userauth", userAuthRoute);
 app.use("/api/story", storiesRoute);
-
-// app.use("*", (req, res) => {
-//   res.status(404).json({ errorMessage: "Route Not Found!" });
-// });
-
-// app.use((error, req, res, next) => {
-//   console.log(error);
-//   res.status(500).json({
-//     errorMessage: "Something went wrong",
-//   });
-// });
 
 app.get("/api/health", (req, res) => {
   console.log("Server health is Excellent");
