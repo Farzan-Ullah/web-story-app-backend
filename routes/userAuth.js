@@ -5,10 +5,18 @@ const { verifyToken } = require("../middleware/tokenVerify");
 
 router.post("/register", userAuthController.registerUser);
 router.post("/login", userAuthController.loginUser);
+router.get("/userdetails/:userId", verifyToken, userAuthController.getUserById);
 router.put(
-  "/addBookmarks/:id", verifyToken,
+  "/addBookmarks/:id",
+  verifyToken,
   userAuthController.updateUserBookmarks
 );
+
+// router.delete(
+//   "/userdetails/:userId/deletebookmarks/:id",
+//   verifyToken,
+//   userAuthController.deleteUserBookmarks
+// );
 router.put("/addlikes/:id", verifyToken, userAuthController.updateUserLikes);
 
 router.put(
