@@ -5,6 +5,7 @@ const userAuthRoute = require("./routes/userAuth");
 const storiesRoute = require("./routes/stories");
 const app = express();
 const cors = require("cors");
+const path = require("path");
 
 app.use(express.json());
 app.use(
@@ -12,6 +13,8 @@ app.use(
     origin: "https://swiptory-web-app.onrender.com/",
   })
 );
+
+app.use(express.static(path.join(__dirname, "build")));
 
 mongoose
   .connect(process.env.MONGODB_URI)
