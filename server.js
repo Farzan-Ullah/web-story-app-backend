@@ -9,8 +9,7 @@ const cors = require("cors");
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://swiptory-web-app.onrender.com/",
-  
+    origin: "https://swiptoryweb.netlify.app",
   })
 );
 
