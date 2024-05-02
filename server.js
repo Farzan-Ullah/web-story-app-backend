@@ -9,7 +9,7 @@ const cors = require("cors");
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://swiptoryweb.netlify.app",
+    origin: "https://swiptory-web-app.onrender.com/",
   })
 );
 
@@ -19,7 +19,7 @@ mongoose
   .catch((error) => console.log("DB Failed to Connect", error));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello Server!");
 });
 
 app.use("/api/userauth", userAuthRoute);
